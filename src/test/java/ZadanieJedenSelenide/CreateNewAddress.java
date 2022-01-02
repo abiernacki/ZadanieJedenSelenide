@@ -24,6 +24,15 @@ public class CreateNewAddress {
     public void logowanieNaStworzonegoUzytkownika() {
 
         $(By.xpath("//*[@id=\"_desktop_user_info\"]/div/a")).click();
+
+        $(By.name("email")).clear();
+        $(By.name("email")).sendKeys("zenon@domena.pl");
+
+        $(By.name("password")).clear();
+        $(By.name("password")).sendKeys("myszka777");
+
+        $(By.id("submit-login")).click();
+
     }
 
     @And("klikniecie kafelka adresses i Create new address i wypełnienie <address>, <city>, <postalCode>, <phone>")
