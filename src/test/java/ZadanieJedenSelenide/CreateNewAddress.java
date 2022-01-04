@@ -3,6 +3,7 @@ package ZadanieJedenSelenide;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -11,7 +12,10 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class CreateNewAddress {
@@ -21,7 +25,7 @@ public class CreateNewAddress {
     @Given("wlaczamy strone sklepu PrestaShop, mamy zarejestrowanego uzytkownika")
     public void wlaczamyStroneSklepuPrestaShopMamyZarejestrowanegoUzytkownika() {
 
-        Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
 //        Configuration.browserSize = "1980x1080";
         Configuration.timeout = 5000;
         open("https://prod-kurs.coderslab.pl/");
@@ -80,8 +84,24 @@ public class CreateNewAddress {
 
     @Then("sprawdzenie czy dane w podanym adresie sa poprawne")
     public void sprawdzenieCzyDaneWPodanymAdresieSaPoprawne() {
+
+        List<WebElement> addressElements = new ArrayList<>($$(By.tagName("article")));
+
+        String addressText = addressElements.get(addressElements.size()-1).getText();
+        Assert.assertTrue(addressText.contains("ul. Rakowiecka 15"));
+        Assert.assertTrue(addressText.contains("Warszawa"));
+        Assert.assertTrue(addressText.contains("02-432"));
+        Assert.assertTrue(addressText.contains("111222333"));
+
+        // Usuwanie ostatnio dodanego adresu
+        List<WebElement> deleteAddresses = new ArrayList<>($$(By.cssSelector("a[data-link-action='delete-address']")));
+        deleteAddresses.get(deleteAddresses.size()-1).click();
+
+        // Sprawdzenie czy adres zostal usuniety
+        List<WebElement> hawMany = new ArrayList<>($$(By.tagName("article")));
+        addressText = hawMany.get(hawMany.size()-1).getText();
+        Assert.assertFalse(addressText.contains(generatedAlias));
+
     }
-
-
     }
 
