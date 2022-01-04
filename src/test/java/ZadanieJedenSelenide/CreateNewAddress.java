@@ -103,5 +103,6 @@ public class CreateNewAddress {
         Assert.assertFalse(addressText.contains(generatedAlias));
 
     }
-    }
+
+}
 
